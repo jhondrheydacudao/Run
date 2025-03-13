@@ -1,2 +1,18 @@
+#!/bin/bash
+
+# Update and install dependencies
 pkg update && pkg upgrade -y
-pkg install curl git nodejs -y
+pkg install curl git nodejs tmux -y
+
+# Clone and set up the dashboard
+rm -rf Hosting  # Remove old folder if exists
+git clone https://github.com/jhondrheydacudao/Hosting.git
+cd Hosting
+npm install
+
+# Start the dashboard in a Tmux session
+tmux new-session -d -s dashboard 'node index.js'
+
+echo "✅ Dashboard is running on port 3001 in a Tmux session."
+echo "💻 To view logs: tmux attach -t dashboard"
+echo "❌ To stop: tmux kill-session -t dashboard"
