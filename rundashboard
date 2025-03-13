@@ -1,52 +1,73 @@
 #!/bin/bash
 
+# ASCII Art
+ascii_art="
+
+       _ _     _                 
+      | (_)   | |                
+      | |_ ___| |__  _ __  _   _ 
+  _   | | / __| '_ \| '_ \| | | |
+ | |__| | \__ \ | | | | | | |_| |
+  \____/|_|___/_| |_|_| |_|\__,_|
+                                 
+"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+BLUE='\033[0;34m'
 CYAN='\033[0;36m'
+YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
-# Clear screen
+# Clear the screen
 clear
-
-# Check if running as root
+# Check if the script is run as root
 if [ "$EUID" -ne 0 ]; then
   echo -e "${RED}Please run this script as root.${NC}"
   exit 1
 fi
 
-echo -e "${CYAN}Installing Dependencies...${NC}"
+echo -e "${CYAN}$ascii_art${NC}"
 
-# Install required packages
+
+echo "* Installing Dependencies"
+
+# Update package list and install dependencies
 sudo apt update
-sudo apt install -y curl git software-properties-common
+sudo apt install -y curl software-properties-common
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs 
+sudo apt-get install nodejs -y 
+sudo apt install git -y
 
-# Clone Hosting repository
-echo -e "${CYAN}Cloning Hosting Repository...${NC}"
-rm -rf Hosting # Remove old version if exists
-git clone https://github.com/jhondrheydacudao/Hosting.git
+echo_message "* Installed Dependencies"
 
-# Go into Hosting directory
-cd Hosting || { echo -e "${RED}Failed to enter Hosting directory!${NC}"; exit 1; }
+echo_message "* Installing Files"
 
-# Install Node.js dependencies
-echo -e "${CYAN}Installing Dependencies...${NC}"
+# Create directory, clone repository, and install files
+mkdir -p Oversee
+cd Oversee || { echo_message "Failed to change directory to skyport"; exit 1; }
+git clone https://github.com/hydren-dev/Oversee.git
+cd Oversee || { echo_message "Failed to change directory to panel"; exit 1; }
 npm install
 
-# Install PM2 globally
-echo -e "${CYAN}Installing PM2...${NC}"
+echo_message "* Installed Files"
+
+echo_message "* Starting Skyport"
+
+# Run setup scripts
+npm run seed
+npm run createUser
+
+echo "* Starting Skyport With PM2"
+
+# Install panel and start the application
 sudo npm install -g pm2
+pm2 start index.js
 
-# Start index.js with PM2
-echo -e "${CYAN}Starting index.js with PM2...${NC}"
-pm2 start index.js --name Hosting
+echo "* Skyport Installed and Started on Port 3001"
 
-# Save PM2 process
-pm2 save
 
-# Set PM2 to start on boot
-pm2 startup systemd
-
-echo -e "${GREEN}Hosting Panel is now running!${NC}"
+# Clear the screen after finishing
+clear
+echo "Made by Jishnu"
