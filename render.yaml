@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hydra-dashboard
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: HYDRA_API_URL
+        value: "https://executorx-hosting.onrender.com"  # Change this to your actual API URL
