@@ -14,10 +14,12 @@ ascii_art="
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+BLUE='\033[0;34m'
 CYAN='\033[0;36m'
+YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
-# Function to print messages
+# Function to display messages
 echo_message() {
   echo -e "${GREEN}$1${NC}"
 }
@@ -36,42 +38,40 @@ echo -e "${CYAN}$ascii_art${NC}"
 echo_message "* Installing Dependencies"
 
 # Update package list and install dependencies
-sudo apt update && sudo apt install -y curl software-properties-common git
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs 
+apt update
+apt install -y curl software-properties-common git
+
+# Install Node.js 20
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt install -y nodejs
 
 echo_message "* Installed Dependencies"
 
 echo_message "* Installing Files"
 
-# Clone repository and install files
-if [ ! -d "Hosting" ]; then
-    git clone https://github.com/jhondrheydacudao/Hosting.git
-else
-    echo_message "Repository already exists, pulling latest changes..."
-    cd Hosting && git pull
-fi
+# Create directory, clone repository, and install dependencies
+mkdir -p hosting
+cd hosting || { echo_message "Failed to change directory to hosting"; exit 1; }
+git clone https://github.com/jhondrheydacudao/Hosting.git
 
 cd Hosting || { echo_message "Failed to change directory to Hosting"; exit 1; }
 npm install
 
 echo_message "* Installed Files"
 
-echo_message "* Starting Skyport"
+echo_message "* Running Setup Scripts"
 
 # Run setup scripts
 npm run seed
 npm run createUser
 
-echo_message "* Starting Skyport With PM2"
+echo_message "* Starting Hosting with PM2"
 
 # Install PM2 and start the application
-sudo npm install -g pm2
+npm install -g pm2
 pm2 start index.js
-pm2 save
-pm2 startup
 
-echo_message "* Skyport Installed and Started on Port 3001"
+echo_message "* Hosting Installed and Started on Port 3001"
 
 # Clear the screen after finishing
 clear
