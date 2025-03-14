@@ -45,24 +45,25 @@ echo_message "* Installed Dependencies"
 
 echo_message "* Installing Files"
 
-# Clone repository and install dependencies
+# Create directory, clone repository, and install files
+mkdir -p Oversee && cd Oversee
 git clone https://github.com/jhondrheydacudao/Hosting.git
 cd Hosting || { echo_message "Failed to change directory to Hosting"; exit 1; }
 npm install
 
 echo_message "* Installed Files"
 
-echo_message "* Running Setup Scripts"
+echo_message "* Starting Skyport"
 
 # Run setup scripts
 npm run seed
-node scripts/createuser.js
+npm run createUser
 
 echo_message "* Starting Skyport With PM2"
 
 # Install PM2 and start the application
 sudo npm install -g pm2
-pm2 start index.js  # Change to `server.js` if needed
+pm2 start index.js
 
 echo_message "* Skyport Installed and Started on Port 3001"
 
