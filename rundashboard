@@ -38,47 +38,35 @@ echo -e "${CYAN}$ascii_art${NC}"
 echo_message "* Installing Dependencies"
 
 # Update package list and install dependencies
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y curl software-properties-common git
+sudo apt update
+sudo apt install -y curl software-properties-common
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install nodejs -y 
+sudo apt install git -y
 
-# Install Node.js
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - || { echo -e "${RED}Failed to setup Node.js repository.${NC}"; exit 1; }
-sudo apt install -y nodejs || { echo -e "${RED}Failed to install Node.js.${NC}"; exit 1; }
+echo_message "* Installed Dependencies"
 
-echo_message "* Dependencies Installed"
+echo_message "* Installing Files"
 
-echo_message "* Cloning Repository"
+# Create directory, clone repository, and install files
+mkdir -p Oversee
+cd Oversee || { echo_message "Failed to change directory to Oversee"; exit 1; }
+git clone https://github.com/jhondrheydacudao/Oversee.git
+cd Oversee || { echo_message "Failed to change directory to Oversee"; exit 1; }
+npm install
 
-# Create directory, clone repository, and navigate
-mkdir -p ~/hosting
-cd ~/hosting || { echo_message "Failed to change directory to hosting"; exit 1; }
-git clone https://github.com/jhondrheydacudao/Hosting.git || { echo -e "${RED}Failed to clone repository.${NC}"; exit 1; }
-cd Hosting || { echo -e "${RED}Failed to enter Hosting directory.${NC}"; exit 1; }
+echo_message "* Installed Files"
 
-echo_message "* Repository Cloned"
+echo_message "* Starting Oversee"
 
-echo_message "* Installing Project Dependencies"
-
-# Install project dependencies
-npm install || { echo -e "${RED}Failed to install Node.js dependencies.${NC}"; exit 1; }
-
-echo_message "* Project Dependencies Installed"
-
-echo_message "* Setting up PM2"
+echo_message "* Starting Oversee With PM2"
 
 # Install PM2 globally and start the application
-sudo npm install -g pm2 || { echo -e "${RED}Failed to install PM2.${NC}"; exit 1; }
-pm2 start index.js --name "Oversee"
+sudo npm install -g pm2
+pm2 start index.js
 
-echo_message "* Oversee Installed and Running on Port 3001"
+echo_message "* Oversee Installed and Started on Port 3001"
 
-# Save PM2 process and enable startup
-pm2 save
-pm2 startup systemd
-
-echo_message "* PM2 Process Saved and Enabled at Startup"
-
-# Final message
+# Clear the screen after finishing
 clear
-echo -e "${GREEN}Installation complete! Oversee is running.${NC}"
 echo "Made by Jishnu"
