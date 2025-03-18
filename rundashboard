@@ -59,10 +59,6 @@ echo_message "* Installed Files"
 
 echo_message "* Starting Oversee"
 
-# Run setup scripts
-npm run seed
-npm run createUser
-
 echo_message "* Starting Oversee With PM2"
 
 # Install PM2 globally and start the application
