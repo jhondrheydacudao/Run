@@ -49,10 +49,10 @@ echo_message "* Installed Dependencies"
 echo_message "* Installing Files"
 
 # Create directory, clone repository, and install files
-mkdir -p Oversee
-cd Oversee || { echo_message "Failed to change directory to Oversee"; exit 1; }
+mkdir -p hosting
+cd hosting || { echo_message "Failed to change directory to Oversee"; exit 1; }
 git clone https://github.com/jhondrheydacudao/Oversee.git
-cd Oversee || { echo_message "Failed to change directory to Oversee"; exit 1; }
+cd hosting || { echo_message "Failed to change directory to Oversee"; exit 1; }
 npm install
 
 echo_message "* Installed Files"
