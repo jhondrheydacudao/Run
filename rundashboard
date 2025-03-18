@@ -51,7 +51,7 @@ echo_message "* Installing Files"
 # Create directory, clone repository, and install files
 mkdir -p hosting
 cd hosting || { echo_message "Failed to change directory to Oversee"; exit 1; }
-git clone https://github.com/jhondrheydacudao/Oversee.git
+git clone https://github.com/jhondrheydacudao/Hosting.git
 cd hosting || { echo_message "Failed to change directory to Oversee"; exit 1; }
 npm install
 
