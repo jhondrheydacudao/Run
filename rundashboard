@@ -49,10 +49,10 @@ echo_message "* Installed Dependencies"
 echo_message "* Installing Files"
 
 # Create directory, clone repository, and install files
-mkdir -p Oversee
-cd Oversee || { echo_message "Failed to change directory to Oversee"; exit 1; }
-git clone https://github.com/jhondrheydacudao/Oversee.git
-cd Oversee || { echo_message "Failed to change directory to Oversee"; exit 1; }
+mkdir -p oversee-fixed
+cd oversee-fixed || { echo_message "Failed to change directory to Oversee"; exit 1; }
+git clone https://github.com/jhondrheydacudao/oversee-fixed.git
+cd oversee-fixed || { echo_message "Failed to change directory to Oversee"; exit 1; }
 npm install
 
 echo_message "* Installed Files"
@@ -67,8 +67,6 @@ npm run createUser
 sudo npm install -g pm2
 pm2 start index.js
 
-echo_message "* Oversee Installed and Started on Port 3001"
+echo_message "* Executorx Installed and Started on Port 3001"
 
-# Clear the screen after finishing
-clear
 echo "Made by Jishnu"
